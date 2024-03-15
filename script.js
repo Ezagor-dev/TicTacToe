@@ -28,7 +28,30 @@ function handleCellClick(clickedCellEvent) {
    
         handleCellPlayed(clickedCell, clickedCellIndex);
         handleResultValidation();
+
+        // If the game is still active after the player's move, let the computer play.
+    if (gameActive) {
+        setTimeout(computerPlay, 1000);
+    }
 }
+function computerPlay() {
+    // Find all indexes that are still empty.
+    const availableIndexes = gameState.reduce((acc, val, index) => {
+        if (val === "") acc.push(index);
+        return acc;
+    }, []);
+
+    // Select a random index from the available ones.
+    const randomIndex = availableIndexes[Math.floor(Math.random() * availableIndexes.length)];
+
+    // If there's a spot available, make the computer move.
+    if (randomIndex !== undefined) {
+        gameState[randomIndex] = "O";
+        document.querySelector(`[data-cell-index="${randomIndex}"]`).innerHTML = "O";
+        handleResultValidation();
+    }
+    }
+
 
 function handleCellPlayed(clickedCell, clickedCellIndex) {
     
